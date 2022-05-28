@@ -2,24 +2,54 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { INavType } from './Menu'
 import { Entypo } from '@expo/vector-icons'; 
+import { Fontisto } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface Props{
-    type:INavType
+    type:INavType,
+    onClick:()=>void
 }
 
 function TypeToIcon(type:INavType){
     switch(type){
         case "Todo":
-            return "list"
+            return <Entypo name={"list"} size={30} color="black" />
         case "None":
-            return "app-store"
+            return <MaterialIcons name="error" size={30} color="black" />
+        case 'Main':
+            return <Entypo name={"arrow-up"} size={30} color="black" />
+        case 'Person':
+            return <MaterialIcons name="person" size={30} color="black" />
+        case 'Family':
+            return <Fontisto name="persons" size={30} color="black" />
+        case 'Calendar':
+            return <Entypo name="calendar" size={30} color="black" />
+        case "Cross":
+            return <Entypo name="cross" size={30} color="black" />
+        case "Note":
+            return <FontAwesome name="sticky-note-o" size={30} color="black" />
+        case "List":
+            return <FontAwesome name="list-alt" size={30} color="black" />
+        case "Cal":
+            return <FontAwesome name="calendar" size={30} color="black" />
+        case "Times":
+            return <MaterialIcons name="schedule" size={30} color="black" />
+        case "Pomodoro":
+            return <MaterialIcons name="timer" size={30} color="black" />
+        case "Timer":
+            return <MaterialIcons name="timer-10" size={30} color="black" />
+        case "Shopping":
+            return <Entypo name="shopping-basket" size={30} color="black" />
+        case "Notes":
+            return <MaterialIcons name="notes" size={30} color="black" />
     }
 }
 
-function NavigationButton({type}:Props) {
+function NavigationButton({type, onClick}:Props) {
     return (
-        <TouchableOpacity style={styles.button}>
-            <Entypo name={TypeToIcon(type)} size={36} color="black" />
+        <TouchableOpacity style={styles.button} onPress={onClick}>
+            {TypeToIcon(type)}
         </TouchableOpacity>
     )
 }

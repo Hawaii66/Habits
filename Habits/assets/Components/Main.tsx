@@ -1,22 +1,24 @@
-import React, { useContext } from 'react'
-import { View, StyleSheet } from 'react-native';
+import React, { useContext, useState } from 'react'
+import { View, StyleSheet, Text } from 'react-native';
 import { UserContext } from '../Contexts/UserContext'
 import Auth from './Login/Auth';
-import Menu from './Menu/Menu';
+import Menu, { INavType } from './Menu/Menu';
 import TodoMain from './Todo/TodoMain';
 
 function Main() {
     const {user} = useContext(UserContext);
-  
+    const [menu, setMenu] = useState<INavType>("Todo");
+
     if(user.email === ""){
         return (<Auth/>)
     }
 
     return (
         <View style={styles.main}>
+            <Text>{menu}</Text>
             <TodoMain/>
             <View style={styles.bottom}>
-                <Menu/>
+                <Menu setNav={setMenu}/>
             </View>
         </View>
     )
@@ -35,7 +37,8 @@ const styles = StyleSheet.create({
     },
     bottom:{
         position:"absolute",
-        bottom:0
+        bottom:0,
+        minWidth:"100%"
     }
 });
 
