@@ -2,20 +2,33 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface Props {
-    text:string,
-    onClick:()=>void
+    text?:string,
+    onClick:()=>void,
+	children?:React.ReactNode
 }
 
-function Button({text, onClick}:Props) {
-  return (
-      <TouchableOpacity
-        onPress={onClick}
-		style={styles.button}
-      >
-		  <Text style={styles.text}>{text}</Text>
-      </TouchableOpacity>
+function Button({text, onClick, children}:Props) {
+	if(text !== undefined){
+		return (
+			<TouchableOpacity
+				onPress={onClick}
+				style={styles.button}
+			>
+				<Text style={styles.text}>{text}</Text>
+			</TouchableOpacity>
 
-  )
+		)
+	}else{
+		return (
+			<TouchableOpacity
+				onPress={onClick}
+				style={styles.button}
+			>
+				{children}
+			</TouchableOpacity>
+
+		)
+	}
 }
 
 const styles = StyleSheet.create({
