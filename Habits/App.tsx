@@ -1,6 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import UserWrapper from './assets/Components/UserWrapper';
+import Main from "./assets/Components/Main";
 
 export default function App() {
   const [textResult, setResult] = useState("");
@@ -17,15 +18,11 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>{textResult}</Text>
-      <TouchableOpacity
-        onPress={getTest}
-        >
-          <Text>Fetch text</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
+    <UserWrapper>
+      <View style={styles.container}>
+        <Main/>
+      </View>
+    </UserWrapper>
   );
 }
 
