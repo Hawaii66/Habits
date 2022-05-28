@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { UserContext } from '../Contexts/UserContext'
 import Auth from './Login/Auth';
 import Menu, { INavType } from './Menu/Menu';
+import MenuSelector from './MenuSelector';
 import TodoMain from './Todo/TodoMain';
 
 function Main() {
@@ -15,8 +16,7 @@ function Main() {
 
     return (
         <View style={styles.main}>
-            <Text>{menu}</Text>
-            <TodoMain/>
+            <MenuSelector menu={menu}/>
             <View style={styles.bottom}>
                 <Menu setNav={setMenu}/>
             </View>
