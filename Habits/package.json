@@ -16,7 +16,9 @@
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
     "react-native-web": "0.17.7",
-    "expo-apple-authentication": "~4.2.1"
+    "expo-apple-authentication": "~4.2.1",
+    "expo-checkbox": "~2.1.0",
+    "@expo/vector-icons": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -14,7 +14,7 @@ function Container({children}:Props) {
 const styles = StyleSheet.create({
 	container: {
         padding:3,
-		alignItems:"center",
+		alignItems:'center',
         display:"flex",
         flexDirection:"row",
 	}

@@ -7,7 +7,7 @@ interface Props{
 }
 
 function UserWrapper({children}:Props) {
-    const [user, setUser] = useState<IUser>({email:"",username:"",name:"",appleID:""});
+    const [user, setUser] = useState<IUser>({email:"hawaiilive@outlook.com",username:"HawaiiDev",name:"Sebastian Ahlman",appleID:""});
 
     return (
         <UserContext.Provider value={{setUser,user}}>{children}</UserContext.Provider>

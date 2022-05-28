@@ -10,3 +10,4 @@ if(process.env.MONGO_DB_URI === undefined)
 export const db = monk(process.env.MONGO_DB_URI);
 
 export const users:ICollection = db.get("users");
+export const todos:ICollection = db.get("todos");
