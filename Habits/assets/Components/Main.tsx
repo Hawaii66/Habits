@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { UserContext } from '../Contexts/UserContext'
 import Auth from './Login/Auth';
 import Menu, { INavType } from './Menu/Menu';
 import MenuSelector from './MenuSelector';
-import TodoMain from './Todo/TodoMain';
 
 function Main() {
     const {user} = useContext(UserContext);

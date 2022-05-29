@@ -1,8 +1,8 @@
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import { ITodo } from '../../Interfaces/Todo';
-import Container from '../Utils/Container';
+import { ITodo } from '../../../Interfaces/Todo';
+import Container from '../../Utils/Container';
 import { EvilIcons } from '@expo/vector-icons'; 
 
 interface Props{

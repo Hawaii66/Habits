@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {View, Text, Modal, Pressable, Alert, StyleSheet, TextInput, TouchableOpacity, Animated, Easing} from "react-native";
-import { ITodo } from '../../Interfaces/Todo';
-import Button from '../Utils/Button';
-import Container from '../Utils/Container';
+import { ITodo } from '../../../Interfaces/Todo';
+import Button from '../../Utils/Button';
+import Container from '../../Utils/Container';
 import Todo from './Todo';
 import { Entypo } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
-import { UserContext } from '../../Contexts/UserContext';
+import { UserContext } from '../../../Contexts/UserContext';
 
 function TodoMain() {
     let rotateValueHolder = new Animated.Value(0);

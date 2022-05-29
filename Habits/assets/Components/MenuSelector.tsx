@@ -1,7 +1,7 @@
 import React from 'react'
 import {Text} from "react-native";
 import { INavType } from './Menu/Menu'
-import TodoMain from './Todo/TodoMain'
+import TodoMain from './Menus/Todo/TodoMain'
 
 interface Props{
     menu:INavType
