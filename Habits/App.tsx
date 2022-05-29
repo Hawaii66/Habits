@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import UserWrapper from './assets/Components/UserWrapper';
 import Main from "./assets/Components/Main";
+import NotificationWrapper from './assets/Components/NotificationWrapper';
 
 export default function App() {
   const [textResult, setResult] = useState("");
@@ -19,9 +20,11 @@ export default function App() {
 
   return (
     <UserWrapper>
-      <View style={styles.container}>
-        <Main/>
-      </View>
+      <NotificationWrapper>
+        <View style={styles.container}>
+          <Main/>
+        </View>
+      </NotificationWrapper>
     </UserWrapper>
   );
 }
