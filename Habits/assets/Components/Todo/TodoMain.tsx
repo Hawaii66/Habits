@@ -19,13 +19,24 @@ function TodoMain() {
 
     const {user} = useContext(UserContext);
 
-    useEffect(()=>startImageRotateFunction());
+    useEffect(()=>{
+        var mounted = true;
+        startImageRotateFunction();
+        getTodos().then(data=>{
+            if(mounted){
+                setTodos(data);
+            }
+        });
+        return ()=>{mounted = false;}
+    },[]);
 
-    const showLine = () => {
-        var done = 0;
-        todos.forEach(todo=>{if(todo.done){done += 1}});
-        var notDone = todos.length - done;
-        return done === 0 || notDone === 0;
+    const getTodos = async () => {
+        return fetch(`http://176.10.157.225:5000/todos/all/${user.email}`,{
+            method:"GET",
+            headers:{
+                "Content-type":"application/json"
+            }
+        }).then(res=>res.json())
     }
 
     const startImageRotateFunction = () => {
@@ -70,6 +81,16 @@ function TodoMain() {
         }
     }
 
+    const fetchTodos = async () => {
+        const data = await fetch(`http://176.10.157.225:5000/todos/all/${user.email}`,{
+            method:"GET",
+            headers:{
+                "Content-type":"application/json"
+            }
+        }).then(res=>res.json())
+        setTodos(data);
+    }
+
     const changeState = async (id:string) => {
         var temp = [...todos];
         var index = 0;
@@ -89,13 +110,7 @@ function TodoMain() {
             },
             body:JSON.stringify({state:temp[index].done})
         });
-        const data = await fetch(`http://176.10.157.225:5000/todos/all/${user.email}`,{
-            method:"GET",
-            headers:{
-                "Content-type":"application/json"
-            }
-        }).then(res=>res.json())
-        setTodos(data);
+        fetchTodos();
     }
 
     const removeTodo = async (id:string) => {
@@ -105,13 +120,7 @@ function TodoMain() {
                 "Content-type":"application/json"
             }
         });
-        const data = await fetch(`http://176.10.157.225:5000/todos/all/${user.email}`,{
-            method:"GET",
-            headers:{
-                "Content-type":"application/json"
-            }
-        }).then(res=>res.json())
-        setTodos(data);
+        fetchTodos();
     }
 
     return (
