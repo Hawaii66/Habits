@@ -67,56 +67,11 @@ function MainButton({setMain,showMain,menu,currMenu,nav,setCurrMenu}:Props) {
     return (
         <View style={styles.mainButton}>
             {move && <>
-            {nav(currMenu).map((item,index)=>{
-                return(
-                    <AnimationButton key={index} end={animEndOffsets[index]} moveDownRef={moveDownRef} moveStart={moveStart} type={item} />
-                )
-            })}
-            {/*
-                <Animated.View style={[styles.test,{
-                        transform:[{translateY:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[moveStart, 20]
-                        })},{translateX:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[0, 62]
-                        })}]
-                    }]}>
-                    <NavigationButton onClick={()=>{}} type={"Person"}/>
-                </Animated.View>
-                <Animated.View style={[styles.test,{
-                        transform:[{translateY:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[moveStart, 20]
-                        })},{translateX:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[0, 124]
-                        })}]
-                    }]}>
-                    <NavigationButton onClick={()=>{}} type={"Person"}/>
-                </Animated.View>
-                <Animated.View style={[styles.test,{
-                        transform:[{translateY:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[moveStart, 20]
-                        })},{translateX:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[0, -62]
-                        })}]
-                    }]}>
-                    <NavigationButton onClick={()=>{}} type={"Person"}/>
-                </Animated.View>
-                <Animated.View style={[styles.test,{
-                        transform:[{translateY:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[moveStart, 20]
-                        })},{translateX:moveDownRef.current.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[0, -124]
-                        })}]
-                    }]}>
-                    <NavigationButton onClick={()=>{}} type={"Person"}/>
-                </Animated.View>*/}
+                {nav(currMenu).map((item,index)=>{
+                    return(
+                        <AnimationButton key={index} end={animEndOffsets[index]} moveDownRef={moveDownRef} moveStart={moveStart} type={item} />
+                    )
+                })}
             </>}
             {(animating||showMain) && <>
                 {menu.map((item,index,arr)=>{
