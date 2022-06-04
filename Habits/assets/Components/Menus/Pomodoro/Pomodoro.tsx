@@ -1,37 +1,123 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { View, Text, StyleSheet, Animated, Easing, Modal } from 'react-native'
+import { View, Text, StyleSheet, Animated, Easing, Modal, AppStateStatus } from 'react-native'
 import { NotiContext } from '../../../Contexts/NotificationContext'
 import useInterval from '../../../Hooks/useInterval';
 import EditTimers from './EditTimers';
 import Progress, { IProgress } from './Progress';
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { Entypo } from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppState } from "react-native"
 
 export type EditButtons = "w"|"p"|"r"|"l"|"none";
 
 function Pomodoro() {
-    const [wTimer,setWTimer] = useState(25);
+    const [wTimer,setWTimer] = useState(-5);
     const [pTimer,setPTimer] = useState(5);
     const [reps,setReps] = useState(3);
     const [long,setLong] = useState(30);
 
-    const [timer,setTimer] = useState(59*60+59);
-    const [repCounter,setRepCounter] = useState(0);
+    const [timer,setTimer] = useState(0);
     const [progress,setProgress] = useState<IProgress[]>([]);
-    const [track,setTrack] = useState(3);
+    const [track,setTrack] = useState(0);
 
     const {notification, sendNotification} = useContext(NotiContext);
     const [edit,setEdit] = useState(false);
 
-    const [on,setOn] = useState(true);
+    const [on,setOn] = useState(false);
+    const appState = useRef(AppState.currentState);
 
     let rotateValueHolder = new Animated.Value(0);
     const animatedValueRef = useRef(rotateValueHolder);
     
-    useInterval(()=>{
-        if(on){setTimer(t=>t-1)}
-    },1000);
+    useEffect(() => {
+        const subscription = AppState.addEventListener("change", _handleAppStateChange);
+        return () => {
+          subscription.remove();
+        };
+    }, []);
+
+    const _handleAppStateChange = async (nextAppState: AppStateStatus) => {
+        if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+            console.log('App has come to the foreground!');
+            try{
+                const startTime = await AsyncStorage.getItem("pomodoro-start") / 1000;
+                const nowTime = (new Date()).getTime() / 1000;
+                const offset = nowTime - startTime;
+                var time = 0;
+                if(track > reps){reset();return;}
+
+                if(track % 2 === 0){time = wTimer * 60 - offset;}
+                if(track % 2 === 1){time = pTimer * 60 - offset;}
+                if(track === reps){time = long * 60 - offset}
+                console.log(time);
+                if(time <= 0)
+                {
+                    setTrack(tr=>tr+1);
+                    switchOn(on);
+                    console.log("END TIMER IS DONE");
+                }else{
+                    setTimer(time);
+                }
+            }catch(e){console.log(e)}
+        }else{
+            sendNotification({
+                title:"Test",
+                body:"TEST",
+                code:"Pomodoro",
+                data:{}
+            },timer / 100)
+        }
+    
+        appState.current = nextAppState;
+      };
+
+    useEffect(()=>{
+        switchOn(true)
+        const getTimes = async ()=>{
+            const workTime = await getTimer("w",25);
+            setTimer(workTime * 60);
+            setWTimer(workTime);
+            setPTimer(await getTimer("p",5));
+            setReps(await getTimer("r",4));
+            setLong(await getTimer("l",30));
+        }
+        getTimes();
+    },[]);
+
+    const getTimer = async(key:EditButtons, def:number) => {
+        try{
+            return await AsyncStorage.getItem(key);
+        }catch(e){
+            console.log("Error getting timer: ", e);
+            return def;
+        }
+    }
+
+    useInterval(async ()=>{
+        if(on)
+        {
+            var newTime = timer - 1;
+            if(newTime <= 0)
+            {
+                setTrack(tr=>tr+1);
+                switchOn(on);
+
+                if(track === reps){setTimer(long * 60);return;}
+                if(track > reps){reset();return;}
+
+                if(track % 2 === 1){setTimer(wTimer * 60);}
+                if(track % 2 === 0){setTimer(pTimer * 60);}
+            }else{
+                setTimer(t=>t-1)
+            }
+        }
+    },10);
+
+    const reset = () => {
+        setTrack(0);
+        setTimer(wTimer * 60);
+        recomputeProgress();
+    }
 
     const recomputeProgress = () => {
         var count = 0;
@@ -66,7 +152,7 @@ function Pomodoro() {
         recomputeProgress();
     },[wTimer,pTimer,reps,long])
 
-    const switchOn = (state:boolean) => {
+    const switchOn = async (state:boolean) => {
         setOn(!state)
 
         Animated.timing(animatedValueRef.current,{
@@ -76,7 +162,11 @@ function Pomodoro() {
             useNativeDriver:false
         }).start();
 
-        if(!state){setEdit(false);}
+        if(!state)
+        {
+            await AsyncStorage.setItem("pomodoro-start",(new Date()).getTime().toString());
+            setEdit(false);
+        }
     }
 
     const setEditTimer = (type:EditButtons, num:number) => {
@@ -114,7 +204,7 @@ function Pomodoro() {
             </View>
             <View style={styles.menu}>
                 <View style={styles.shadow}>
-                    <TouchableOpacity onPress={()=>switchOn(on)} style={[styles.mainBtn, on ? styles.on : styles.off]}><Text style={styles.btn}>{on ? "PAUSE" : "START"}</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>switchOn(on)} style={[styles.mainBtn, on ? styles.on : styles.off]}><Text style={styles.btn}>{on ? "PAUSE" : track !== 0 ? "CONTINUE" : "START"}</Text></TouchableOpacity>
                 </View>
                 <View style={[styles.test, !on ? styles.z : {}]}>
                     <Animated.View style={{
@@ -129,8 +219,8 @@ function Pomodoro() {
                             ]
                         }}>
                         <View style={[styles.submenu, styles.shadow]}>
-                            <View style={styles.shadow}><TouchableOpacity style={styles.subbtn} onPress={()=>{console.log("EDIT");setEdit(!edit)}}><Text style={styles.subbtntext}>EDIT TIMERS</Text></TouchableOpacity></View>
-                            <View style={styles.shadow}><TouchableOpacity style={styles.subbtn}><Text style={styles.subbtntext}>RESET</Text></TouchableOpacity></View>
+                            <View style={styles.shadow}><TouchableOpacity style={styles.subbtn} onPress={()=>setEdit(!edit)}><Text style={styles.subbtntext}>EDIT TIMERS</Text></TouchableOpacity></View>
+                            <View style={styles.shadow}><TouchableOpacity style={styles.subbtn} onPress={()=>reset()}><Text style={styles.subbtntext}>RESET</Text></TouchableOpacity></View>
                         </View>
                     </Animated.View>
                 </View>

@@ -28,7 +28,7 @@ function Progress({progress,point}:Props) {
         <View style={styles.parent}>
             <View style={styles.boxparent}>
                 {get6(progress,0).map((item,index)=>{
-                    if(item === undefined){return<></>}
+                    if(item === undefined){return<View key={index}></View>}
                     return(
                         <View key={index} style={[styles.box, item.t === "w" ? styles.work : item.t === "p" ? styles.pause : styles.long]}></View>
                     )
@@ -58,7 +58,7 @@ function Progress({progress,point}:Props) {
             </View>
             <View style={styles.boxparent}>
                 {get6(progress,6).map((item,index)=>{
-                    if(item === undefined){return<></>}
+                    if(item === undefined){return<View key={index}></View>}
                     return(
                         <View key={index} style={[styles.box, item.t === "w" ? styles.work : item.t === "p" ? styles.pause : styles.long]}></View>
                     )
