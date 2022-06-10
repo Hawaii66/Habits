@@ -10,6 +10,14 @@ interface Props{
     children:React.ReactNode
 }
 
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+	  shouldShowAlert: true,
+	  shouldPlaySound: true,
+	  shouldSetBadge: false,
+	}),
+  });
+
 function NotificationWrapper({children}:Props) {
 	const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState<INotification>({body:"",code:"None",data:"",title:""});
@@ -54,8 +62,7 @@ function NotificationWrapper({children}:Props) {
     const sendNotification = async (data:INotification, delay:number) => {
         if(delay !== 0)
         {
-            await schedulePushNotification(data,delay)
-            return;
+            return await schedulePushNotification(data,delay)
         }
     }
 
@@ -87,11 +94,13 @@ async function sendPushNotification(expoPushToken:string) {
 }
 
 async function schedulePushNotification(noti:INotification, delay:number) {
-	await Notifications.scheduleNotificationAsync({
+	return await Notifications.scheduleNotificationAsync({
 	  content: {
 		title: noti.title,
 		body: noti.body,
 		data: { data: noti.data, code:noti.code },
+		sound:"iphone_cool_tone.wav",
+		vibrate:[1,1,1,1]
 	  },
 	  trigger: { seconds: delay },
 	});
@@ -103,7 +112,13 @@ async function registerForPushNotificationsAsync() {
 		const { status: existingStatus } = await Notifications.getPermissionsAsync();
 		let finalStatus = existingStatus;
 		if (existingStatus !== 'granted') {
-		const { status } = await Notifications.requestPermissionsAsync();
+		const { status } = await Notifications.requestPermissionsAsync({
+			ios:{
+				allowAlert:true,
+				allowAnnouncements:true,
+				allowSound:true
+			}
+		});
 		finalStatus = status;
 		}
 		if (finalStatus !== 'granted') {

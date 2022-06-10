@@ -3,7 +3,7 @@ import { INotification } from "../Interfaces/Notification";
 
 interface INotiContext {
     notification:INotification,
-    sendNotification:(noti:INotification,delay:number)=>void
+    sendNotification:(noti:INotification,delay:number)=>Promise<string|undefined>
 }
 
 export const NotiContext = createContext<INotiContext>(
@@ -14,6 +14,8 @@ export const NotiContext = createContext<INotiContext>(
             title:"",
             code:"None"            
         },
-        sendNotification:(_)=>{}
+        sendNotification:async (noti,delay) => {
+            return await Promise.resolve("");
+        }
     }
 )

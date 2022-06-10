@@ -5,4 +5,4 @@ export interface INotification {
     code:INoteCode
 }
 
-export type INoteCode = "None"|"Pomodoro"
+export type INoteCode = "None"|"Pomodoro"|"Timer"

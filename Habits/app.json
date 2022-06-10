@@ -34,11 +34,10 @@
             [
                 "expo-notifications",
                 {
-                    "icon": "./local/assets/notification-icon.png",
-                    "color": "#ffffff",
+                    "icon": "./local/assets/favicon.png",
+                    "color": "#00ff00",
                     "sounds": [
-                        "./local/assets/notification-sound.wav",
-                        "./local/assets/notification-sound-other.wav"
+                        "./local/assets/Sounds/iphone_cool_tone.wav"
                     ]
                 }
             ]
