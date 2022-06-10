@@ -10,7 +10,7 @@ export const NoteRoutes = (app:Express) => {
         res.status(200).json(notes);
     });
 
-    app.get("/notes/private/create", async (req,res) => {
+    app.post("/notes/private/create", async (req,res) => {
         const email = req.body.email;
         const toCreate:INote = {
             header:"",
@@ -25,7 +25,7 @@ export const NoteRoutes = (app:Express) => {
         res.status(200).json(note);
     });
     
-    app.get("/notes/private/update/:id", async (req,res) => {
+    app.post("/notes/private/update/:id", async (req,res) => {
         const id = req.params.id;
         const text = req.body.text;
 
@@ -33,10 +33,10 @@ export const NoteRoutes = (app:Express) => {
         res.status(200);
     });
 
-    app.get("/notes/private/delete/:id", async (req,res) => {
+    app.delete("/notes/private/delete/:id", async (req,res) => {
         const id = req.params.id;
 
         await DeleteNote(id);
-        res.status(200);
+        res.status(200).send();
     })
 }

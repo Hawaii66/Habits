@@ -9,7 +9,16 @@ type DeleteNoteType = (id:string) => Promise<void>;
 export const CreateNote:CreateNoteType = async (note) => {
     const id = GetRandomID();
     note.id = id;
-    return await notes.insert(note);
+    const fakeNote = await notes.insert(note);
+    const realNote:INote = {
+        header:fakeNote.header,
+        id:id,
+        lastUpdated:fakeNote.lastUpdated,
+        owners:fakeNote.owners,
+        private:fakeNote.private,
+        text:fakeNote.text
+    };
+    return realNote;
 }
 
 export const DeleteNote:DeleteNoteType = async (id) => {
