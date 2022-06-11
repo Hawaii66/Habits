@@ -26,6 +26,8 @@ function MenuSelector({menu}:Props) {
             return <NoteHome/>
         case "Family-Manager":
             return <FamilyWrapper menu={menu}/>
+        case "Notification":
+            return <FamilyWrapper menu={menu}/>
     }
 
     return <Text>Error, Nothing Here</Text>

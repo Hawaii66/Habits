@@ -7,6 +7,7 @@ import { UserContext } from '../../../Contexts/UserContext';
 import { IFamily } from '../../../Interfaces/Family';
 import { INavType } from '../../Menu/Menu';
 import FamilyManager from './FamilyManager';
+import FamilyNotification from './FamilyNotification';
 
 interface Props
 {
@@ -61,6 +62,8 @@ function FamilyWrapper({menu}:Props)
         {
             case "Family-Manager":
                 return <FamilyManager />
+            case "Notification":
+                return <FamilyNotification />
         }
     }
 
