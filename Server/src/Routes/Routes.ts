@@ -1,4 +1,5 @@
 import {Express} from "express";
+import { FamilyRoutes } from "./FamilyRoutes";
 import { NoteRoutes } from "./NoteRoutes";
 import { TodoRoutes } from "./TodoRoutes";
 import { UserRoutes } from "./UserRoutes";
@@ -13,4 +14,5 @@ export const Routes = async (app:Express) => {
     UserRoutes(app);
     TodoRoutes(app);
     NoteRoutes(app);
+    FamilyRoutes(app);
 }

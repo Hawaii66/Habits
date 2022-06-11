@@ -12,3 +12,4 @@ export const db = monk(process.env.MONGO_DB_URI);
 export const users:ICollection = db.get("users");
 export const todos:ICollection = db.get("todos");
 export const notes:ICollection = db.get("notes");
+export const families:ICollection = db.get("families");
