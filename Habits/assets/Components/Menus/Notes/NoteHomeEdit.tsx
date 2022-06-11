@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Ionicons } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -18,12 +18,12 @@ function NoteHomeEdit({sort,create,del,deleting}:Props) {
     return (
         <View style={styles.container}>
             <View style={styles.note}>
-                <TouchableOpacity onPress={create} style={[styles.btn,styles.create]}><Ionicons name="create" size={54} color="black" /></TouchableOpacity>
-                <TouchableOpacity onPress={sort} style={[styles.btn, styles.sort]}><FontAwesome name="sort-numeric-asc" size={54} color="black" /></TouchableOpacity>
-                <TouchableOpacity onPress={del} style={[styles.btn, styles.sort]}>{
+                <TouchableOpacity onPress={create} style={styles.btn}><Ionicons name="create" size={54} color="white" /></TouchableOpacity>
+                <TouchableOpacity onPress={sort} style={styles.btn}><FontAwesome5 name="sort-amount-down-alt" size={50} color="white" /></TouchableOpacity>
+                <TouchableOpacity onPress={del} style={styles.btn}>{
                     !deleting ? 
-                    <AntDesign name="delete" size={54} color="black" /> :
-                    <MaterialIcons name="cancel" size={54} color="black" />
+                    <AntDesign name="delete" size={54} color="white" /> :
+                    <MaterialIcons name="cancel" size={54} color="white" />
                 }</TouchableOpacity>
             </View>
         </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         height:160,
         overflow:"hidden",
         borderRadius:15,
-        backgroundColor:"#79828B",
+        backgroundColor:"#0000001f",
         margin:10,
     },
     note:{
@@ -50,16 +50,10 @@ const styles = StyleSheet.create({
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
-        backgroundColor:"#E74C3C",
+        backgroundColor:"#353B48",
         margin:5,
         overflow:"hidden",
         borderRadius:24
-    },
-    sort:{
-
-    },
-    create:{
-
     }
 })
 

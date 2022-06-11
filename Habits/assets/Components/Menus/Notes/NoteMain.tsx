@@ -23,13 +23,14 @@ function NoteMain() {
         return <NoteHome setNote={setNote}/>
     }
 
-    return <NoteView note={note} setNote={setNote}/>
+    return <NoteView note={note} back={()=>setNote({
+        header:"",
+        id:"",
+        lastUpdated:0,
+        owners:[],
+        private:false,
+        text:""
+    })}/>
 }
-
-const styles = StyleSheet.create({
-    main:{
-
-    }
-});
 
 export default NoteMain

@@ -13,12 +13,12 @@ export const NoteRoutes = (app:Express) => {
     app.post("/notes/private/create", async (req,res) => {
         const email = req.body.email;
         const toCreate:INote = {
-            header:"",
+            header:"Temporary",
             id:"",
             lastUpdated:Date.now(),
             owners:[email],
             private:true,
-            text:""
+            text:"Start typing to add some notes"
         };
 
         const note = await CreateNote(toCreate);
@@ -28,9 +28,10 @@ export const NoteRoutes = (app:Express) => {
     app.post("/notes/private/update/:id", async (req,res) => {
         const id = req.params.id;
         const text = req.body.text;
+        const header = req.body.header;
 
-        await UpdateNote(id, text);
-        res.status(200);
+        await UpdateNote(id, text, header);
+        res.status(200).send();
     });
 
     app.delete("/notes/private/delete/:id", async (req,res) => {

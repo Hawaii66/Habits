@@ -3,7 +3,7 @@ import { notes } from "./Database";
 
 type GetNotesType = (email:string) => Promise<INote[]>;
 type CreateNoteType = (note:INote) => Promise<INote>;
-type UpdateNoteType = (id:string, text:string) => Promise<void>;
+type UpdateNoteType = (id:string, text:string, header:string) => Promise<void>;
 type DeleteNoteType = (id:string) => Promise<void>;
 
 export const CreateNote:CreateNoteType = async (note) => {
@@ -34,8 +34,8 @@ export const GetAllNotes:GetNotesType = async (email) => {
     return toGetNotes;
 }
 
-export const UpdateNote:UpdateNoteType = async (id,text) => {
-    await notes.findOneAndUpdate({id:id},{$set:{text:text}});
+export const UpdateNote:UpdateNoteType = async (id,text,header) => {
+    await notes.findOneAndUpdate({id:id},{$set:{text:text,header:header}});
 }
 
 function GetRandomID(){

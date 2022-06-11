@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { View, StyleSheet,  FlatList, Animated, Easing } from 'react-native';
+import { getData, uploadData } from '../../../Contexts/StaticContext';
 import { UserContext } from '../../../Contexts/UserContext';
 import { useShake } from '../../../Hooks/Animations/useShake';
 import { INote } from '../../../Interfaces/Notes';
@@ -27,15 +28,10 @@ function NoteHome({setNote}:Props) {
     const [deleteScale,deleteRotation] = useShake(shouldDelete);
 
     const fetchNotes = async () => {
-        const result = await fetch(`http://176.10.157.225:5000/notes/private/get/${user.email}`,{
-            method:"GET",
-            headers:{
-                "Content-type":"application/json"
-            }
-        });
-        if(result.status !== 200){return;}
+        const {success, data} = await getData(`/notes/private/get/${user.email}`);
+        if(!success){return;}
         
-        updateNotes(await result.json());
+        updateNotes(data);
     }
 
     useEffect(() => {
@@ -43,26 +39,16 @@ function NoteHome({setNote}:Props) {
     },[])
 
     const create = async () => {
-        const result = await fetch(`http://176.10.157.225:5000/notes/private/create/`,{
-            method:"POST",
-            headers:{
-                "Content-type":"application/json"
-            },
-            body:JSON.stringify({
-                email:user.email
-            })
+        const {data} = await uploadData(`/notes/private/create`,"POST",{
+            email:user.email
         });
-        const note:INote = await result.json();
+        const note:INote = data;
         setNote(note);
     }
 
     const deleteNoteClicked = async (id:string) => {
-        await fetch(`http://176.10.157.225:5000/notes/private/delete/${id}`,{
-            method:"DELETE",
-            headers:{
-                "Content-type":"application/json"
-            }
-        });
+        await uploadData(`/notes/private/delete/${id}`,"DELETE",{});
+
         var tempNotes = [...notes];
         updateNotes(tempNotes.filter(i=>i.id !== id));
         setDelete(false);
