@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import MainButton from './MainButton';
 import NavigationButton from './NavigationButton';
 
-export type INavType = "List" | "None" | "Main" | "Person" | "Family" | "Calendar" | "Cross" | "Todo"|"Note" | "Notes" | "Cal" | "Times" |"Pomodoro"|"Timer"|"Shopping"
+export type INavType = "List" | "Notification" | "None" | "Main" | "Person" | "Family" | "Calendar" | "Cross" | "Todo"|"Note" | "Notes" | "Cal" | "Times" |"Pomodoro"|"Timer"|"Shopping"|"Family-Manager"
 
 function TypeToNav(type:INavType):INavType[]
 {
@@ -16,7 +16,7 @@ function TypeToNav(type:INavType):INavType[]
         case "Person":
             return ["Pomodoro","Timer","None","None"];
         case "Family":
-            return ["Shopping","Notes","None","None"];
+            return ["Shopping","Notes","Notification","Family-Manager"];
     }
 
     return ["None","None","None","None"]

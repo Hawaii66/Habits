@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { View, StyleSheet } from 'react-native';
+import { NavigationContext } from '../Contexts/NavigationContext';
 import { UserContext } from '../Contexts/UserContext'
 import Auth from './Login/Auth';
 import Menu, { INavType } from './Menu/Menu';
@@ -14,12 +15,14 @@ function Main() {
     }
 
     return (
-        <View style={styles.main}>
-            <MenuSelector menu={menu}/>
-            <View style={styles.bottom}>
-                <Menu setNav={setMenu}/>
+        <NavigationContext.Provider value={{navigation:menu,setNavigation:(val)=>setMenu(val)}}>
+            <View style={styles.main}>
+                <MenuSelector menu={menu}/>
+                <View style={styles.bottom}>
+                    <Menu setNav={setMenu}/>
+                </View>
             </View>
-        </View>
+        </NavigationContext.Provider>
     )
 }
 
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
         borderWidth:1,
         justifyContent:"center",
         alignContent:"center",
-        alignItems:"center"
+        alignItems:"center",
     },
     bottom:{
         position:"absolute",

@@ -5,6 +5,8 @@ import { Entypo } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props{
     type:INavType,
@@ -42,7 +44,11 @@ function TypeToIcon(type:INavType){
         case "Shopping":
             return <Entypo name="shopping-basket" size={30} color="black" />
         case "Notes":
-            return <MaterialIcons name="notes" size={30} color="black" />
+            return <FontAwesome5 name="sticky-note" size={30} color="black" />
+        case "Family-Manager":
+            return <MaterialIcons name="settings" size={30} color="black" />
+        case "Notification":
+            return <Ionicons name="notifications-sharp" size={30} color="black" />
     }
 }
 

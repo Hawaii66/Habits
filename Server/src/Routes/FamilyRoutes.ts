@@ -24,10 +24,12 @@ export const FamilyRoutes = (app:Express) => {
     app.post("/family/remove/member/:id", async (req,res) => {
         const id = req.params.id;
         await RemoveMember(id, req.body.member);
+        res.status(200).send();
     });
     
     app.post("/family/change/name/:id", async (req,res) => {
         const id = req.params.id;
         await ChangeName(id, req.body.name);
+        res.status(200).send()
     });
 }
