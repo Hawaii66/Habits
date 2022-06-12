@@ -28,6 +28,7 @@ function NotificationWrapper({children}:Props) {
 		registerForPushNotificationsAsync().then(token => {
 			if(token === undefined){return;}
 			setExpoPushToken(token);
+			console.log("EPXO PUSH TOKE: ", token);
 		});
 
 		notificationListener.current = Notifications.addNotificationReceivedListener(newNoti => {
