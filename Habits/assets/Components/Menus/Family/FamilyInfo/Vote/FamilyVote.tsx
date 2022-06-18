@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { FamilyContext } from '../../../../../Contexts/FamilyContext';
 import { getData } from '../../../../../Contexts/StaticContext';
 import { IVote } from '../../../../../Interfaces/Family';
@@ -20,12 +20,17 @@ function FamilyVote({}:Props)
         passes:0
     });
 
-    const {family} = useContext(FamilyContext);
+    const {family,refreshFamily} = useContext(FamilyContext);
 
     const fetchVote = async () => {
-        const result = await getData(`/family/vote/${family.voteID}`);
+        const result = await getData(`/family/votes/get/${family.id}`);
         const data:IVote = result.data;
         setVote(data); 
+    }
+
+    const refreshVotes = async () => {
+        fetchVote();
+        refreshFamily();
     }
 
     useEffect(() => {
@@ -34,15 +39,15 @@ function FamilyVote({}:Props)
 
     if(family.voteID === "")
     {
-        return <VoteCreate refresh={()=>{}} />
+        return <VoteCreate refresh={()=>refreshVotes()} />
     }
 
     if(family.members.length === GetTotalVoters(vote))
     {
-        return <></>//<VoteDone />
+        return <Text>DONE</Text>//<VoteDone />
     }
 
-    return <></>//<VoteInProgress />
+    return <Text>VOTE</Text>//<VoteInProgress />
 }
 
 function GetTotalVoters(vote:IVote):number

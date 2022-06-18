@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { FlatList, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { FamilyContext } from '../../../../../../Contexts/FamilyContext';
+import { uploadData } from '../../../../../../Contexts/StaticContext';
 import { IVote } from '../../../../../../Interfaces/Family';
 import VoteCreateAdd from './VoteCreateAdd';
 import VoteCreateItem from './VoteCreateItem';
@@ -32,7 +33,7 @@ function VoteCreate({refresh}:Props)
 
     const changeName = (index:number, name:string) => {
         var newVote = {...vote};
-        newVote.alternatives[index].name = name;
+        newVote.alternatives[index].name = name.trimStart().trimEnd();
         setVote(newVote);
     }
 
@@ -53,6 +54,17 @@ function VoteCreate({refresh}:Props)
         var newVote = {...vote};
         newVote.name = text;
         setVote(newVote);
+    }
+
+    const createVote = async () => {
+        if(vote.name === "") return;
+        if(vote.alternatives.length <= 1) return;
+        if(vote.familyID === "") return;
+        
+        await uploadData(`/family/votes/create`,"POST",{
+            ...vote
+        });
+        refresh();
     }
 
     return(
@@ -93,6 +105,7 @@ function VoteCreate({refresh}:Props)
                         <TouchableOpacity
                             disabled={vote.alternatives.length <= 1}
                             style={styles.createBtn}
+                            onPress={()=>createVote()}
                         >
                             <Text style={styles.createBtnText}>{vote.alternatives.length <= 1 ? "To few" : "Create"}</Text>
                         </TouchableOpacity>

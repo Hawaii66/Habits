@@ -30,25 +30,25 @@ function FamilyWrapper({menu}:Props)
     const {user} = useContext(UserContext);
     const {setNavigation} = useContext(NavigationContext);
 
-    useEffect(() => {
-        const fetchFamily = async () => {
-            const result = await getData(`/family/get/member/${user.email}`);
-            if(result.success)
+    const fetchFamily = async () => {
+        const result = await getData(`/family/get/member/${user.email}`);
+        if(result.success)
+        {
+            const activeId = await AsyncStorage.getItem("family-active");
+            if(activeId !== null)
             {
-                const activeId = await AsyncStorage.getItem("family-active");
-                if(activeId !== null)
-                {
-                    result.data.forEach((family:IFamily) => {
-                        if(family.id === activeId){setFamily(family)}
-                    });
-                }
-                else
-                {
-                    setFamily(result.data[0]);
-                }
+                result.data.forEach((family:IFamily) => {
+                    if(family.id === activeId){setFamily(family)}
+                });
+            }
+            else
+            {
+                setFamily(result.data[0]);
             }
         }
+    }
 
+    useEffect(() => {
         fetchFamily();
     },[]);
 
@@ -70,7 +70,7 @@ function FamilyWrapper({menu}:Props)
     }
 
     return (
-        <FamilyContext.Provider value={{family:family,setFamily:(fam)=>changeActiveFamily(fam)}}>
+        <FamilyContext.Provider value={{family:family,refreshFamily:()=>fetchFamily(),setFamily:(fam)=>changeActiveFamily(fam)}}>
             <View style={{height:"100%",}}>
                 <View style={styles.header}>
                     <Text onPress={()=>{

@@ -3,7 +3,8 @@ import { IFamily } from "../Interfaces/Family";
 
 interface IFamilyContext {
     family:IFamily,
-    setFamily:(family:IFamily) => void
+    setFamily:(family:IFamily) => void,
+    refreshFamily:()=>Promise<void>
 }
 
 export const FamilyContext = createContext<IFamilyContext>(
@@ -13,8 +14,10 @@ export const FamilyContext = createContext<IFamilyContext>(
             members:[],
             name:"",
             notes:[],
-            shopping:[]
+            shopping:[],
+            voteID:""
         },
-        setFamily:(val)=>{}
+        setFamily:(val)=>{},
+        refreshFamily:()=>new Promise(()=>{})
     }
 )

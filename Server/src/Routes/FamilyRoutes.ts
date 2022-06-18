@@ -2,6 +2,7 @@ import {Express} from "express";
 import { GetUserEmail } from "../Database/Users";
 import { AddMember, ChangeName, CreateFamily, GetFamilies, GetFamily, RemoveMember } from "../Database/Family";
 import axios from 'axios';
+import { VoteRoutes } from "./Family/Vote";
 
 export const FamilyRoutes = (app:Express) => {
     app.get("/family/get/member/:id",async (req,res) => {
@@ -32,7 +33,7 @@ export const FamilyRoutes = (app:Express) => {
         }
         await axios.post("https://exp.host/--/api/v2/push/send",data);
         res.status(200).send();
-    })
+    });
 
     app.post("/family/create/:member", async (req,res)=> {
         const member = req.params.member;
@@ -57,4 +58,6 @@ export const FamilyRoutes = (app:Express) => {
         await ChangeName(id, req.body.name);
         res.status(200).send()
     });
+
+    VoteRoutes(app);
 }

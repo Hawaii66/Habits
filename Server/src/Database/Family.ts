@@ -60,7 +60,7 @@ export const CreateFamily:CreateFamilyType = async (member) => {
     return newFamily;
 }
 
-function GetRandomID(name:string)
+export function GetRandomID(name:string)
 {
     var randomID = Date.now() + ":" + Math.floor(Math.random() * 1000000) + ":" + name;
     return randomID;
