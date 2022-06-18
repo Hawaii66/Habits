@@ -4,15 +4,22 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
 
 interface Props
 {
-    addItem:()=>void
+    addItem:()=>void,
+    disable:boolean
 }
 
-function VoteCreateAdd({addItem}:Props)
+function VoteCreateAdd({addItem,disable}:Props)
 {
     return(
         <View style={styles.item}>
             <View style={styles.shadow}>
-                <TouchableOpacity onPress={()=>addItem()} style={styles.textWrapper}><Text style={styles.text}>Add Alternative</Text></TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={()=>addItem()} 
+                    style={styles.textWrapper}
+                    disabled={disable}
+                >
+                        <Text style={styles.text}>Add Alternative</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

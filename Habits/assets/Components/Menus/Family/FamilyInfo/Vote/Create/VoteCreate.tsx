@@ -98,7 +98,7 @@ function VoteCreate({refresh}:Props)
                             />}
                         />
                     </View>
-                    <VoteCreateAdd addItem={addItem}/>
+                    <VoteCreateAdd disable={vote.alternatives.length > 5} addItem={addItem}/>
                 </View>
                 <View style={styles.bottom}>
                     <View style={styles.shadow}>
