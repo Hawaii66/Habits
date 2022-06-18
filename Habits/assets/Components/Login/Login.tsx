@@ -3,23 +3,27 @@ import { View } from 'react-native'
 import Button from '../Utils/Button'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { UserContext } from '../../Contexts/UserContext';
+import { getData, uploadData } from '../../Contexts/StaticContext';
+import { IUser } from '../../Interfaces/User';
 
 interface Props{
     cancell: ()=>void
 }
 
 function Login({cancell}:Props) {
-    const {setUser} = useContext(UserContext);
+    const {setUser,expoToken} = useContext(UserContext);
 
     const appleSignIn = async (id:string) => {
-        const result = await (fetch(`http://176.10.157.225:5000/users/get/appleid/${id}`, {
-            method:"GET",
-            headers:{
-                "Content-type":"application/json"
-            }
-        })).then(res=>res.json());
-
-        setUser(result.user);
+        const data = await getData(`/users/get/appleid/${id}`);
+        var newUser:IUser = data.data.user;
+        if(expoToken !== "")
+        {
+            newUser.expoPushToken = expoToken;
+        }
+        setUser(newUser);
+        await uploadData(`/notification/save/${newUser.email}`,"POST",{
+            token:expoToken
+        });
     }
 
     return (

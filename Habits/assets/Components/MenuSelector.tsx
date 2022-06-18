@@ -16,18 +16,15 @@ function MenuSelector({menu}:Props) {
 
     switch(menu)
     {
-        case "Todo":
+        case "Person-Todo":
             return <TodoMain/>
-        case "Pomodoro":
-            return <Pomodoro/>
-        case "Timer":
-            return <Timer/>
-        case "Note":
-            return <NoteHome/>
+        case "Person-Notes":
+            return <NoteHome />
+        
+        case "FamilyInfo-Notification":
+            return <FamilyWrapper menu={menu} />
         case "Family-Manager":
-            return <FamilyWrapper menu={menu}/>
-        case "Notification":
-            return <FamilyWrapper menu={menu}/>
+            return <FamilyWrapper menu={menu} />
     }
 
     return <Text>Error, Nothing Here</Text>

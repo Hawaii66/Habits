@@ -37,13 +37,13 @@ function FamilyPreview({family,setFamily,gold}:Props)
         switch(index)
         {
             case 0:
-                setNavigation("Shopping");
+                setNavigation("Family-Shopping");
                 break;
             case 1:
-                setNavigation("Notes");
+                setNavigation("Family-Notes");
                 break;
             case 2:
-                setNavigation("Notification");
+                setNavigation("FamilyInfo-Notification");
                 break;
         }
     }

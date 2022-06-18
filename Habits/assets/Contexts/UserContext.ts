@@ -3,7 +3,9 @@ import { IUser } from "../Interfaces/User";
 
 interface IUserContext {
     user:IUser,
-    setUser:(user:IUser)=>void
+    setUser:(user:IUser)=>void,
+    expoToken:string,
+    setToken:(token:string)=>void
 }
 
 export const UserContext = createContext<IUserContext>(
@@ -12,8 +14,11 @@ export const UserContext = createContext<IUserContext>(
             appleID:"",
             email:"",
             name:"",
-            username:""
+            username:"",
+            expoPushToken:""
         },
-        setUser:(user)=>{}
+        setUser:(user)=>{},
+        expoToken:"",
+        setToken:(t)=>{}
     }
 )

@@ -4,6 +4,18 @@ import { users } from "./Database";
 type UserExistsType = (email:string) => Promise<boolean>;
 type AddUserType = (user:IUser) => Promise<boolean>;
 type GetUserType =(id:string) => Promise<IUser>;
+type UpdateExpoPushTokenType = (email:string, token:string) => Promise<void>;
+
+export const UpdateExpoToken:UpdateExpoPushTokenType = async (email, token) => {
+    var user = await GetUserEmail(email);
+    console.log(user);
+    if(user.appleID !== "" && user.expoPushToken !== token)
+    {
+        console.log("SAVing user");
+        user.expoPushToken = token;
+        await users.findOneAndUpdate({email:email},{$set:user});
+    }
+}
 
 export const UserExists:UserExistsType = async (email) => {
     const user = await GetUserEmail(email);

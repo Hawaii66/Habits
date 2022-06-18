@@ -20,5 +20,21 @@ export interface IFamily
     id:string,
     members:string[], //Email array
     shopping:IStore[],
-    notes:INote[]
+    notes:INote[],
+    voteID:string
+}
+
+export interface Vote
+{
+    name:string,
+    id:string,
+    familyID:string,
+    alternatives:VoteAlternative[],
+}
+
+export interface VoteAlternative
+{
+    name:string,
+    votes:number,
+    voters:string[] //Email IDs
 }

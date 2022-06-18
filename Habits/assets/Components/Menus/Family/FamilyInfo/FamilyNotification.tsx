@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, Text, Alert, Animated, Modal } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { FamilyContext } from '../../../Contexts/FamilyContext';
+import { FamilyContext } from '../../../../Contexts/FamilyContext';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import FamilyNotificationBox from './FamilyNotificationBox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import FamilyNotificationPresets from './FamilyNotificationPresets';
+import { UserContext } from '../../../../Contexts/UserContext';
+import { uploadData } from '../../../../Contexts/StaticContext';
 
 interface Props
 {
@@ -31,6 +33,7 @@ function FamilyNotification({}:Props)
     });
 
     const {family} = useContext(FamilyContext);
+    const {user} = useContext(UserContext);
 
     const saveAsPreset = async () => {
         var arr:NotificationPreset[] = await JSON.parse(await AsyncStorage.getItem("family-noti-saved"));
@@ -99,6 +102,13 @@ function FamilyNotification({}:Props)
         }
     }
 
+    const sendNotification = async () => {
+        await uploadData(`/family/notification/send/${family.id}`,"POST",{
+            header:headerText,
+            body:bodyText
+        });
+    }
+
     useEffect(() => {
         fetchPresets();
     },[]);
@@ -106,9 +116,6 @@ function FamilyNotification({}:Props)
     return(
         <View style={styles.optout}>
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerText}>{family.name}</Text>
-                </View>
                 <View style={styles.shadow}>
                     <View style={styles.notification}>
                         <View style={styles.presetWrapper}>
@@ -139,7 +146,7 @@ function FamilyNotification({}:Props)
 
                         <View style={styles.bottom}>
                             <TouchableOpacity
-                                    onPress={()=>Alert.alert("Test")}
+                                    onPress={()=>sendNotification()}
                                     style={styles.sendBtnWrapper}
                                 >
                                 <Text style={styles.sendBtn}>Send</Text>
@@ -164,22 +171,8 @@ const styles = StyleSheet.create({
         width:"100%"
     },
     container:{
-        marginTop:50,
         width:"100%",
         height:"70%",
-    },
-    header:{
-        height:50,
-        width:375,
-    },
-    headerText:{
-        textAlign:"center",
-        textAlignVertical:"center",
-        fontSize:36,
-        fontWeight:"800",
-        color:"#fff",
-        textDecorationLine:"underline",
-        textDecorationStyle:'double'
     },
     notification:{
         marginTop:40,

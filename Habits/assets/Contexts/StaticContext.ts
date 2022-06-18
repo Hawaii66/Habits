@@ -4,7 +4,7 @@ interface IStaticContext {
     api:string
 }
 
-const api = "http://176.10.157.225:5555"
+const api = "http://178.174.227.183:5555"
 
 export const StaticContext = createContext<IStaticContext>(
     {
@@ -58,10 +58,8 @@ export const uploadData:UploadDataType = async (endpoint:string, method:string, 
     }
 
     const contentType = result.headers.get("content-type");
-    console.log(contentType);
     if(contentType && contentType.indexOf("application/json") !== -1){
         const data = await result.json();
-        console.log(data)
         return {
             data,
             success:true

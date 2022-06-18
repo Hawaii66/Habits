@@ -1,10 +1,12 @@
 import * as Device from 'expo-device';
 import { Subscription } from 'expo-modules-core';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
 import { INoteCode, INotification } from '../Interfaces/Notification';
 import * as Notifications from "expo-notifications";
 import { NotiContext } from '../Contexts/NotificationContext';
+import { UserContext } from '../Contexts/UserContext';
+import { uploadData } from '../Contexts/StaticContext';
 
 interface Props{
     children:React.ReactNode
@@ -24,11 +26,32 @@ function NotificationWrapper({children}:Props) {
     const notificationListener = useRef<Subscription>();
     const responseListener = useRef<Subscription>();
 
+	const {user, setUser, setToken} = useContext(UserContext);
+
 	useEffect(() => {
-		registerForPushNotificationsAsync().then(token => {
+		if(user.expoPushToken === "")
+		{
+			setUser({
+				appleID:user.appleID,
+				email:user.email,
+				expoPushToken:expoPushToken,
+				name:user.name,
+				username:user.username
+			});
+			setToken(expoPushToken);
+		}
+	},[expoPushToken])
+
+	useEffect(() => {
+		registerForPushNotificationsAsync().then(async(token) => {
+			console.log("FOund token", token);
 			if(token === undefined){return;}
+			console.log("Token not undefined");
 			setExpoPushToken(token);
-			console.log("EPXO PUSH TOKE: ", token);
+			console.log("Saving to internet with email", user);
+			await uploadData(`/notification/save/${user.email}`,"POST",{
+				token:token
+			});
 		});
 
 		notificationListener.current = Notifications.addNotificationReceivedListener(newNoti => {

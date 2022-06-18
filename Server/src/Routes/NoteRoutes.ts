@@ -13,7 +13,7 @@ export const NoteRoutes = (app:Express) => {
     app.post("/notes/private/create", async (req,res) => {
         const email = req.body.email;
         const toCreate:INote = {
-            header:"Temporary",
+            header:"Note",
             id:"",
             lastUpdated:Date.now(),
             owners:[email],

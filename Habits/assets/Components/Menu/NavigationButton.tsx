@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { INavType } from './Menu'
-import { Entypo } from '@expo/vector-icons'; 
+import { AntDesign, Entypo } from '@expo/vector-icons'; 
 import { Fontisto } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -14,7 +14,55 @@ interface Props{
 }
 
 function TypeToIcon(type:INavType){
+    console.log(type);
     switch(type){
+        case "Select":
+            return <AntDesign name="questioncircle" size={30} color="black" />
+        case "Select-Create":
+            return <Ionicons name="create-outline" size={30} color="black" />
+        case "Select-Edit":
+            return <AntDesign name="edit" size={30} color="black" />
+        case "Select-Select":
+            return <FontAwesome name="group" size={30} color="black" />
+
+        case "Family":
+            return <MaterialIcons name="group" size={30} color="black" />
+        case "Family-Chatt":
+            return <Entypo name="chat" size={30} color="black" />
+        case "Family-Food":
+            return <Ionicons name="fast-food" size={30} color="black" />
+        case "Family-Notes":
+            return <FontAwesome name="sticky-note-o" size={30} color="black" />
+        case "Family-Shopping":
+            return <Entypo name="shopping-basket" size={30} color="black" />
+        
+        case "FamilyInfo":
+            return <Ionicons name="information" size={30} color="black" />
+        case "FamilyInfo-Notification":
+            return <Ionicons name="notifications" size={30} color="black" />
+        case "FamilyInfo-Vote":
+            return <MaterialIcons name="how-to-vote" size={30} color="black" />
+
+        case "Person":
+            return <Ionicons name="person" size={30} color="black" />
+        case "Person-Notes":
+            return <FontAwesome name="sticky-note-o" size={30} color="black" />
+        case "Person-Todo":
+            return <Entypo name="list" size={30} color="black" />
+        case "Person-Notification":
+            return <Ionicons name="notifications" size={30} color="black" />
+
+
+        case 'Main':
+            return <Entypo name={"arrow-up"} size={30} color="black" />
+        case "Cross":
+                return <Entypo name="cross" size={30} color="black" />
+        case "None":
+            return <MaterialIcons name="error" size={30} color="black" />
+        default:
+            return <MaterialIcons name="error" size={30} color="black" />
+        
+            /*
         case "Todo":
             return <Entypo name={"list"} size={30} color="black" />
         case "None":
@@ -49,6 +97,7 @@ function TypeToIcon(type:INavType){
             return <MaterialIcons name="settings" size={30} color="black" />
         case "Notification":
             return <Ionicons name="notifications-sharp" size={30} color="black" />
+        */
     }
 }
 

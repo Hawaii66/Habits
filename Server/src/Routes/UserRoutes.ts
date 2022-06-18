@@ -8,7 +8,8 @@ export const UserRoutes = (app:Express) => {
             email:req.body.email,
             name:req.body.name,
             username:req.body.username,
-            appleID:req.body.appleID
+            appleID:req.body.appleID,
+            expoPushToken:req.body.pushToken
         };
 
         await AddUser(details);

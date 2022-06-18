@@ -3,5 +3,6 @@ export interface IUser
     email:string,
     username:string,
     name:string,
-    appleID:string
+    appleID:string,
+    expoPushToken:string
 }

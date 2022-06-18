@@ -75,10 +75,12 @@ function FamilyManager({}:Props)
 const styles = StyleSheet.create({
     container:{
         width:"100%",
-        height:"100%"
+        height:"70%",
+        display:"flex",
+        justifyContent:"space-between"
     },
     families:{
-        height:480,
+        height:360,
         width:360,
         marginTop:40,
         marginLeft:5,
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
+        marginBottom:0
     },
     newFamilyBtn:{
         width:280,

@@ -1,13 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { FamilyContext } from '../../../Contexts/FamilyContext';
 import { getData } from '../../../Contexts/StaticContext';
 import { UserContext } from '../../../Contexts/UserContext';
-import { IFamily } from '../../../Interfaces/Family';
+import { FamilyNull, IFamily } from '../../../Interfaces/Family';
 import { INavType } from '../../Menu/Menu';
 import FamilyManager from './FamilyManager';
-import FamilyNotification from './FamilyNotification';
+import FamilyNotification from './FamilyInfo/FamilyNotification';
+import { NavigationContext } from '../../../Contexts/NavigationContext';
 
 interface Props
 {
@@ -25,6 +26,7 @@ function FamilyWrapper({menu}:Props)
     });
     
     const {user} = useContext(UserContext);
+    const {setNavigation} = useContext(NavigationContext);
 
     useEffect(() => {
         const fetchFamily = async () => {
@@ -34,13 +36,9 @@ function FamilyWrapper({menu}:Props)
                 const activeId = await AsyncStorage.getItem("family-active");
                 if(activeId !== null)
                 {
-                    for(var i = 0; i < result.data.length; i ++)
-                    {
-                        if(result.data[i].id === activeId)
-                        {
-                            setFamily(result.data[i]);
-                        }
-                    }
+                    result.data.forEach((family:IFamily) => {
+                        if(family.id === activeId){setFamily(family)}
+                    });
                 }
                 else
                 {
@@ -60,22 +58,42 @@ function FamilyWrapper({menu}:Props)
     const GetAcctualComponent = () => {
         switch(menu)
         {
+            case "FamilyInfo-Notification":
+                return <FamilyNotification />
             case "Family-Manager":
                 return <FamilyManager />
-            case "Notification":
-                return <FamilyNotification />
         }
     }
 
     return (
         <FamilyContext.Provider value={{family:family,setFamily:(fam)=>changeActiveFamily(fam)}}>
-            {GetAcctualComponent()}
+            <View style={{height:"100%",}}>
+                <View style={styles.header}>
+                    <Text onPress={()=>{
+                        setNavigation("Family-Manager");
+                    }} style={styles.headerText}>{family.name}</Text>
+                </View>
+                {GetAcctualComponent()}
+            </View>
         </FamilyContext.Provider>
     )
 }
 
 const styles = StyleSheet.create({
-
+    header:{
+        marginTop:50,
+        height:50,
+        width:375,
+    },
+    headerText:{
+        textAlign:"center",
+        textAlignVertical:"center",
+        fontSize:36,
+        fontWeight:"800",
+        color:"#fff",
+        textDecorationLine:"underline",
+        textDecorationStyle:'double'
+    },
 });
 
 export default FamilyWrapper
