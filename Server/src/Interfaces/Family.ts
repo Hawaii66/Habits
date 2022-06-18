@@ -24,15 +24,16 @@ export interface IFamily
     voteID:string
 }
 
-export interface Vote
+export interface IVote
 {
     name:string,
     id:string,
     familyID:string,
-    alternatives:VoteAlternative[],
+    passes:number,
+    alternatives:IVoteAlternative[],
 }
 
-export interface VoteAlternative
+export interface IVoteAlternative
 {
     name:string,
     votes:number,

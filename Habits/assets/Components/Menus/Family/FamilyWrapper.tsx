@@ -4,11 +4,12 @@ import { StyleSheet, View, Text } from 'react-native'
 import { FamilyContext } from '../../../Contexts/FamilyContext';
 import { getData } from '../../../Contexts/StaticContext';
 import { UserContext } from '../../../Contexts/UserContext';
-import { FamilyNull, IFamily } from '../../../Interfaces/Family';
+import { IFamily } from '../../../Interfaces/Family';
 import { INavType } from '../../Menu/Menu';
 import FamilyManager from './FamilyManager';
 import FamilyNotification from './FamilyInfo/FamilyNotification';
 import { NavigationContext } from '../../../Contexts/NavigationContext';
+import FamilyVote from './FamilyInfo/Vote/FamilyVote';
 
 interface Props
 {
@@ -22,7 +23,8 @@ function FamilyWrapper({menu}:Props)
         members:[],
         name:"",
         notes:[],
-        shopping:[]
+        shopping:[],
+        voteID:""
     });
     
     const {user} = useContext(UserContext);
@@ -62,6 +64,8 @@ function FamilyWrapper({menu}:Props)
                 return <FamilyNotification />
             case "Family-Manager":
                 return <FamilyManager />
+            case "FamilyInfo-Vote":
+                return <FamilyVote />
         }
     }
 

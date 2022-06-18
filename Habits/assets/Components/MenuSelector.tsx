@@ -1,6 +1,7 @@
 import React from 'react'
 import {Text} from "react-native";
 import { INavType } from './Menu/Menu'
+import FamilyVote from './Menus/Family/FamilyInfo/Vote/FamilyVote';
 import FamilyManager from './Menus/Family/FamilyManager';
 import FamilyWrapper from './Menus/Family/FamilyWrapper';
 import NoteHome from './Menus/Notes/NoteMain';
@@ -22,6 +23,8 @@ function MenuSelector({menu}:Props) {
             return <NoteHome />
         
         case "FamilyInfo-Notification":
+            return <FamilyWrapper menu={menu} />
+        case "FamilyInfo-Vote":
             return <FamilyWrapper menu={menu} />
         case "Family-Manager":
             return <FamilyWrapper menu={menu} />

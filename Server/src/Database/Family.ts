@@ -52,7 +52,8 @@ export const CreateFamily:CreateFamilyType = async (member) => {
         members:[member],
         name:"Family",
         notes:[],
-        shopping:[]
+        shopping:[],
+        voteID:""
     }
 
     const newFamily:IFamily = await families.insert(family);
