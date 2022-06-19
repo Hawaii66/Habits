@@ -30,7 +30,8 @@ function Signup({cancell}:Props) {
 			appleID:info.appleid,
 			email:info.email,
 			name:name,
-			username:username
+			username:username,
+			expoPushToken:""
 		}
 
 		const result = await fetch(`http://176.10.157.225:5000/users/create`,{
