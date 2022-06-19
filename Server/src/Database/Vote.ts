@@ -1,10 +1,11 @@
-import { IVote } from "../Interfaces/Family";
+import { IFamily, IVote } from "../Interfaces/Family";
 import { families, votes } from "./Database";
 import { GetRandomID } from "./Family";
 
 type CreateVoteType = (vote:IVote) => Promise<IVote>;
 type GetVoteType = (familyID:string) => Promise<IVote|null>;
 type AddVoteType = (familyID:string, voteIndex:number, email:string) => Promise<IVote|null>;
+type DeleteVoteType = (familyID:string) => Promise<IFamily>;
 
 export const CreateVote:CreateVoteType = async (vote) => {
     const id = GetRandomID("vote");
@@ -31,7 +32,7 @@ export const AddVote:AddVoteType = async (familyID, voteIndex, email) => {
     vote.passers.forEach(item=>{if(item.includes(email)){hasVoted = true;}});
     if(hasVoted){return null;}
 
-    if(voteIndex > 0)
+    if(voteIndex >= 0)
     {
         vote.alternatives[voteIndex].votes += 1;
         vote.alternatives[voteIndex].voters.push(email);
@@ -42,4 +43,10 @@ export const AddVote:AddVoteType = async (familyID, voteIndex, email) => {
 
     const newVote:IVote|null = await votes.findOneAndUpdate({familyID:familyID},{$set:vote});
     return newVote;
+}
+
+export const DeleteVote:DeleteVoteType = async (familyID) => {
+    await votes.findOneAndDelete({familyID:familyID});
+    const family:IFamily = await families.findOneAndUpdate({id:familyID},{$set:{voteID:""}});
+    return family;
 }

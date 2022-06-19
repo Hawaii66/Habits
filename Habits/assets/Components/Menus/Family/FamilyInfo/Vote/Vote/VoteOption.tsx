@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         fontWeight:"700"
     },
     space:{
-        marginBottom:15
+        marginTop:15
     }
 });
 

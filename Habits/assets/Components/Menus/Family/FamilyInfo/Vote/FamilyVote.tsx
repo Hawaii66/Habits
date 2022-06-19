@@ -24,13 +24,34 @@ function FamilyVote({}:Props)
         passers:[]
     });
 
-    const {family,refreshFamily} = useContext(FamilyContext);
+    const {family,refreshFamily,setFamily} = useContext(FamilyContext);
     const {user} = useContext(UserContext);
 
     const fetchVote = async () => {
         const result = await getData(`/family/votes/get/${family.id}`);
+        if(!result.success)
+        {
+            setVote({
+                alternatives:[],
+                familyID:"",
+                id:"",
+                name:"",
+                passes:0,
+                passers:[]
+            }); 
+
+            var newFamily = {...family};
+            newFamily.voteID = "";
+            setFamily(newFamily);
+            return;
+        }
+
         const data:IVote = result.data;
         setVote(data); 
+
+        var newFamily = {...family};
+        newFamily.voteID = data.id;
+        setFamily(newFamily);
     }
 
     const refreshVotes = async () => {
@@ -49,7 +70,7 @@ function FamilyVote({}:Props)
         fetchVote();
     },[]);
 
-    if(family.voteID === "")
+    if(family.voteID === "" || vote === null)
     {
         return <VoteCreate refresh={()=>refreshVotes()} />
     }

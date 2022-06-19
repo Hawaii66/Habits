@@ -28,7 +28,7 @@ function VoteAdd({vote,setVote}:Props)
         if(current === -1){return;}
 
         var voteChoice = current;
-        if(current === vote.alternatives.length){voteChoice = -1;}
+        if(voteChoice === vote.alternatives.length){voteChoice = -1;}
 
         const newVote = await uploadData(`/family/votes/vote`,"POST",{
             familyID:family.id,
@@ -42,17 +42,10 @@ function VoteAdd({vote,setVote}:Props)
     }
 
     const getData = () => {
-        var data = ["Pass"];
+        var data:string[] = [];
         vote.alternatives.forEach(item=>data.push(item.name));
+        data.push("Pass")
         return data;
-
-        /*
-        {vote.alternatives.map((item,index)=>{
-            return <VoteOption key={index} name={item.name} choose={()=>onChoose(index)} selected={index === current}/>    
-        })}
-        <View style={styles.break}></View>
-        <VoteOption name={"Pass"} choose={()=>onChoose(vote.alternatives.length)} selected={vote.alternatives.length === current}/>
-        */
     }
 
     return(
@@ -62,7 +55,7 @@ function VoteAdd({vote,setVote}:Props)
                 <FlatList 
                     data={getData()}
                     renderItem={(item)=>{
-                        return <VoteOption space={item.index === 0} key={item.index} name={item.item} choose={()=>onChoose(item.index)} selected={item.index === current}/>
+                        return <VoteOption space={item.index === vote.alternatives.length} key={item.index} name={item.item} choose={()=>onChoose(item.index)} selected={item.index === current}/>
                     }}
                 />
             </View>

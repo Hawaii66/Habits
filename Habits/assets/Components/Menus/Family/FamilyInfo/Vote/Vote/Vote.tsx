@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, View, Text, Switch } from 'react-native'
+import { Dimensions, StyleSheet, View, Text, Switch, Alert } from 'react-native'
 import { IFamily, IVote } from '../../../../../../Interfaces/Family';
 import {PieChart} from "react-native-chart-kit";
 import { FontAwesome } from '@expo/vector-icons';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { FamilyContext } from '../../../../../../Contexts/FamilyContext';
+import { getData } from '../../../../../../Contexts/StaticContext';
 
 interface Props
 {
@@ -97,7 +98,7 @@ function Vote({vote,refresh}:Props)
     const [data,setData] = useState<any[]>([]);
     useEffect(()=>setData(VoteToPieData(vote)),[vote]);
 
-    const {family} = useContext(FamilyContext);
+    const {family,setFamily} = useContext(FamilyContext);
     
     const hasVotes = (data:any[]) => {
         var hasFoundVoteCount = 0;
@@ -105,6 +106,23 @@ function Vote({vote,refresh}:Props)
             if(item.votes > 0){hasFoundVoteCount += 1;}
         });
         return hasFoundVoteCount > 0;
+    }
+
+    const deleteVote = async () => {
+        const result = await getData(`/family/votes/delete/${family.id}`);
+        setFamily(result.data);
+    }
+
+    const deleteAlert = () => {
+        Alert.alert("Delete Vote?", "Are you sure you want to delete the current vote.", [
+            {
+                text:"Yes",
+                onPress:deleteVote
+            },{
+                text:"No",
+                onPress:()=>{}
+            },
+        ]);
     }
 
     return(
@@ -116,6 +134,12 @@ function Vote({vote,refresh}:Props)
                         onPress={()=>refresh()}
                     >
                         <FontAwesome name="refresh" size={30} color="black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={deleteAlert}
+                        style={styles.delete}
+                    >
+                        <FontAwesome name="trash" size={30} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -186,8 +210,9 @@ const styles = StyleSheet.create({
         width:50,
         height:50,
         display:"flex",
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent:"space-between",
+        alignItems:"center",
+        flexDirection:"row"
     },
     stats:{
         width:315,
@@ -231,6 +256,9 @@ const styles = StyleSheet.create({
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
+    },
+    delete:{
+        marginLeft:20
     }
 });
 

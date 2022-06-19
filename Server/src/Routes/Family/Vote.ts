@@ -1,5 +1,5 @@
 import {Express} from "express";
-import { AddVote, CreateVote, GetVote } from "../../Database/Vote";
+import { AddVote, CreateVote, DeleteVote, GetVote } from "../../Database/Vote";
 import { IVote } from "../../Interfaces/Family";
 
 export const VoteRoutes = (app:Express) => {
@@ -27,6 +27,7 @@ export const VoteRoutes = (app:Express) => {
         const id = req.params.familyID;
 
         const vote = await GetVote(id);
+        if(vote === null){res.status(400).send()}
         res.status(200).json(vote);
     });
 
@@ -39,5 +40,12 @@ export const VoteRoutes = (app:Express) => {
         if(vote === null){res.status(400).send("Error with adding a vote");}
     
         res.status(200).json(vote);
+    });
+
+    app.get("/family/votes/delete/:familyID",async(req,res)=>{
+        const familyID = req.params.familyID;
+
+        const family = await DeleteVote(familyID);
+        res.status(200).json(family);
     });
 }
