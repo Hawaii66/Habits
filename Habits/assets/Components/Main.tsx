@@ -5,6 +5,7 @@ import { UserContext } from '../Contexts/UserContext'
 import Auth from './Login/Auth';
 import Menu, { INavType } from './Menu/Menu';
 import MenuSelector from './MenuSelector';
+import SocketWrapper from './SocketWrapper';
 
 function Main() {
     const {user} = useContext(UserContext);
@@ -15,14 +16,16 @@ function Main() {
     }
 
     return (
-        <NavigationContext.Provider value={{navigation:menu,setNavigation:(val)=>setMenu(val)}}>
-            <View style={styles.main}>
-                <MenuSelector menu={menu}/>
-                <View style={styles.bottom}>
-                    <Menu setNav={setMenu}/>
+        <SocketWrapper>
+            <NavigationContext.Provider value={{navigation:menu,setNavigation:(val)=>setMenu(val)}}>
+                <View style={styles.main}>
+                    <MenuSelector menu={menu}/>
+                    <View style={styles.bottom}>
+                        <Menu setNav={setMenu}/>
+                    </View>
                 </View>
-            </View>
-        </NavigationContext.Provider>
+            </NavigationContext.Provider>
+        </SocketWrapper>
     )
 }
 

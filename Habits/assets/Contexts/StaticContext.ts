@@ -1,14 +1,17 @@
 import { createContext, useContext } from "react";
 
 interface IStaticContext {
-    api:string
+    api:string,
+    socketEndpoint:string
 }
 
 const api = "http://178.174.227.183:5555"
+const socketEndpoint = "http://178.174.227.183:5555";
 
 export const StaticContext = createContext<IStaticContext>(
     {
-        api
+        api,
+        socketEndpoint
     }
 )
 

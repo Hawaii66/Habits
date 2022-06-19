@@ -4,6 +4,7 @@ import { INavType } from './Menu/Menu'
 import FamilyVote from './Menus/Family/FamilyInfo/Vote/FamilyVote';
 import FamilyManager from './Menus/Family/FamilyManager';
 import FamilyWrapper from './Menus/Family/FamilyWrapper';
+import Notes from './Menus/Family/Social/Notes/Notes';
 import NoteHome from './Menus/Notes/NoteMain';
 import Pomodoro from './Menus/Pomodoro/Pomodoro';
 import Timer from './Menus/Timer/Timer';
@@ -27,6 +28,9 @@ function MenuSelector({menu}:Props) {
         case "FamilyInfo-Vote":
             return <FamilyWrapper menu={menu} />
         case "Family-Manager":
+            return <FamilyWrapper menu={menu} />
+
+        case "Family-Notes":
             return <FamilyWrapper menu={menu} />
     }
 

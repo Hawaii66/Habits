@@ -10,6 +10,8 @@ import FamilyManager from './FamilyManager';
 import FamilyNotification from './FamilyInfo/FamilyNotification';
 import { NavigationContext } from '../../../Contexts/NavigationContext';
 import FamilyVote from './FamilyInfo/Vote/FamilyVote';
+import Notes from './Social/Notes/Notes';
+import { SocketContext } from '../../../Contexts/SocketContext';
 
 interface Props
 {
@@ -29,20 +31,29 @@ function FamilyWrapper({menu}:Props)
     
     const {user} = useContext(UserContext);
     const {setNavigation} = useContext(NavigationContext);
+    const {socket} = useContext(SocketContext);
 
     const fetchFamily = async () => {
         const result = await getData(`/family/get/member/${user.email}`);
+        console.log("FETCH",result);
         if(result.success)
         {
             const activeId = await AsyncStorage.getItem("family-active");
             if(activeId !== null)
             {
                 result.data.forEach((family:IFamily) => {
-                    if(family.id === activeId){setFamily(family)}
+                    if(family.id === activeId)
+                    {
+                        console.log("EMIT");
+                        socket?.emit("Family-Join",{familyID:family.id});
+                        setFamily(family);
+                    }
                 });
             }
             else
             {
+                console.log("EMITtset",result.data[0].id);
+                socket?.emit("Family-Join",{familyID:result.data[0].id});
                 setFamily(result.data[0]);
             }
         }
@@ -66,6 +77,8 @@ function FamilyWrapper({menu}:Props)
                 return <FamilyManager />
             case "FamilyInfo-Vote":
                 return <FamilyVote />
+            case "Family-Notes":
+                return <Notes />
         }
     }
 
