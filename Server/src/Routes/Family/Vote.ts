@@ -1,5 +1,5 @@
 import {Express} from "express";
-import { CreateVote, GetVote } from "../../Database/Vote";
+import { AddVote, CreateVote, GetVote } from "../../Database/Vote";
 import { IVote } from "../../Interfaces/Family";
 
 export const VoteRoutes = (app:Express) => {
@@ -28,5 +28,16 @@ export const VoteRoutes = (app:Express) => {
 
         const vote = await GetVote(id);
         res.status(200).json(vote);
-    })
+    });
+
+    app.post("/family/votes/vote",async(req,res)=>{
+        const familyID = req.body.familyID;
+        const voteIndex = req.body.voteIndex;
+        const email = req.body.email;
+
+        const vote = await AddVote(familyID,voteIndex,email);
+        if(vote === null){res.status(400).send("Error with adding a vote");}
+    
+        res.status(200).json(vote);
+    });
 }

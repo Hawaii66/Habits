@@ -22,11 +22,16 @@ function VoteCreate({refresh}:Props)
             name:"Tacos",
             voters:[],
             votes:0
+        },{
+            name:"Burger",
+            voters:[],
+            votes:0
         }],
         familyID:family.id,
         id:"",
-        name:"Vote",
-        passes:0
+        name:"Food",
+        passes:0,
+        passers:[]
     });
     const [editHeader,setHeaderEdit] = useState(false);
     const [headerText,setHeaderText] = useState(vote.name);

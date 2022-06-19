@@ -76,7 +76,7 @@ function GetStatArray(vote:IVote, family:IFamily){
     var passersEmail = GetNoVoters(vote,family);
     var passersNew:string[] = [];
     passersEmail.forEach(item=>passersNew.push(`- ${item}`));
-    const haventVoted = `No vote: ${passersEmail.length}`;
+    const haventVoted = `Hasn't voted: ${passersEmail.length}`;
 
     const result = [
         totalVoters,

@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { FamilyContext } from '../../../../../Contexts/FamilyContext';
 import { getData } from '../../../../../Contexts/StaticContext';
+import { UserContext } from '../../../../../Contexts/UserContext';
 import { IVote } from '../../../../../Interfaces/Family';
 import VoteCreate from './Create/VoteCreate';
 import Vote from './Vote/Vote';
+import VoteAdd from './Vote/VoteAdd';
 
 interface Props
 {
@@ -23,6 +25,7 @@ function FamilyVote({}:Props)
     });
 
     const {family,refreshFamily} = useContext(FamilyContext);
+    const {user} = useContext(UserContext);
 
     const fetchVote = async () => {
         const result = await getData(`/family/votes/get/${family.id}`);
@@ -35,6 +38,13 @@ function FamilyVote({}:Props)
         refreshFamily();
     }
 
+    const hasVoted = (name:string) => {
+        var has = false;
+        vote.alternatives.forEach(item=>{if(item.voters.includes(name)){has=true}});
+        if(vote.passers.includes(name)){has = true;}
+        return has;
+    }
+
     useEffect(() => {
         fetchVote();
     },[]);
@@ -44,12 +54,12 @@ function FamilyVote({}:Props)
         return <VoteCreate refresh={()=>refreshVotes()} />
     }
 
-    if(family.members.length === GetTotalVoters(vote))
+    if(hasVoted(user.email))
     {
-        return <Text>DONE</Text>//<VoteDone />
+        return <Vote refresh={()=>fetchVote()} vote={vote} />
     }
 
-    return <Vote refresh={()=>fetchVote()} vote={vote} />
+    return <VoteAdd setVote={(v)=>setVote(v)} vote={vote}/>
 }
 
 function GetTotalVoters(vote:IVote):number
