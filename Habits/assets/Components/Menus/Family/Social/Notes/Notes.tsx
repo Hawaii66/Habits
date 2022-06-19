@@ -70,24 +70,8 @@ function Notes({}:Props)
         return(<NoteEdit back={()=>setNote(null)} note={note} setNote={(n)=>setNote(n)}/>)
     }
 
-    return(
-        <View>
-            <TouchableOpacity
-                onPress={create}
-            >
-                <Text>Create</Text>
-            </TouchableOpacity>
-            <View>
-                {notes.map((item,index)=>{
-                    return <Text key={index}>{item.header}</Text>
-                })}
-            </View>
-        </View>
-    )
+    setNote(null);
+    return <></>
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default Notes

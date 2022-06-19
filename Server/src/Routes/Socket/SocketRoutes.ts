@@ -1,5 +1,5 @@
 import {Socket} from "socket.io";
-import { CreateNote, GetFamilyNote, GetFamilyNotes } from "../../Database/FamilyNotes";
+import { CreateNote, GetFamilyNote, GetFamilyNotes, SaveFamilyNote } from "../../Database/FamilyNotes";
 import { GetFamilies, GetFamily } from "../../Database/Family";
 import {Express} from "express";
 import { DeleteNote } from "../../Database/Notes";
@@ -30,6 +30,39 @@ function GetDebug()
     debug["rooms"] = temp2;
     debug["notes"] = openNotes;
     return debug;
+}
+
+async function CloseAllNotesFromUser(email:string)
+{
+    const notes = await GetFamilyNotes(email);
+    for(var i = 0; i < notes.length; i ++)
+    {
+        if(openNotes[notes[i].id] !== undefined)
+        {
+            await SaveFamilyNote(openNotes[notes[i].id]);
+        }
+    }
+
+    var toRemove = {...openNotes};
+    for(var familyID in rooms)
+    {
+        const family = rooms[familyID];
+        family.forEach(u=>{
+            for(var noteID in openNotes)
+            {
+                const note = openNotes[noteID];
+                if(note.owners.includes(u.email))
+                {
+                    delete toRemove[note.id];
+                }
+            }
+        });
+    }
+
+    for(var noteID in toRemove)
+    {
+        delete openNotes[noteID];
+    }
 }
 
 function GetSockets(roomID:string)
@@ -153,6 +186,8 @@ export const SocketRoutes = (io:any, app:Express) => {
         socket.on("disconnect",()=>{
             const user = GetSocketUser(socket);
             if(user === null){return;}
+
+            CloseAllNotesFromUser(user.email);
 
             for(var key in rooms) {
                 var value = rooms[key];
