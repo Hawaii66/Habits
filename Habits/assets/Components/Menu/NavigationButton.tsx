@@ -14,7 +14,6 @@ interface Props{
 }
 
 function TypeToIcon(type:INavType){
-    console.log(type);
     switch(type){
         case "Select":
             return <AntDesign name="questioncircle" size={30} color="black" />

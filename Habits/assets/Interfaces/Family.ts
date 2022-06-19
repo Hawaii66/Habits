@@ -30,6 +30,7 @@ export interface IVote
     id:string,
     familyID:string,
     passes:number,
+    passers:string[],
     alternatives:IVoteAlternative[],
 }
 

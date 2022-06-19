@@ -9,16 +9,15 @@ export const VoteRoutes = (app:Express) => {
             familyID:req.body.familyID,
             id:"",
             name:req.body.name,
-            passes:0
+            passes:0,
+            passers:[]
         };
-        console.log(vote);
         const maybeOldVote = await GetVote(vote.familyID);
         if(maybeOldVote !== null)
         {
             res.status(200).json(maybeOldVote);
             return;
         }
-        console.log("Adding");
 
         const newVote = await CreateVote(vote);
         res.status(200).json(newVote);

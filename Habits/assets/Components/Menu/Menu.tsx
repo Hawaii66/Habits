@@ -14,23 +14,25 @@ export type INavType = "List" | "Notification" | "None" | "Main" | "Person" | "C
     - Todo [] (Create todo lists to keep on top of everything)
     - Notes [] (Take simple notes that sync with the cloud)
     - Custom notifications (Send notifications to a special user)
-    - Calculator with equations ?
+    - Movie Picker Stars
 
-- Family 
-    - Shopping (Organised Todo lists with things to buy from different stores)
+- Family Social
     - Notes (Create and edit in basic notes)
     - Chat (Chat with your family and keep up to date with everything)
-
-- FamilyInfo
-    - Notification (Send simple notifications to the whole family)
+    - Spotify
     - Vote (Vote on things with beautiful diagrams)
-    - 
+
+- Family Info
+    - Shoppping (Organised Todo lists with things to buy from different stores)
+    - Noficiation (Send simple notifications to the whole family)
+    - Events
+    - Movie Picker
 
 - Select Family
     - Select Family (Select the current family)
     - Create family (Create a new family and add members)
     - Edit family (Edit the current familys name and memembers)
-    - 
+    - Settings
 
 */
 function TypeToNav(type:INavType):INavType[]
@@ -49,7 +51,7 @@ function TypeToNav(type:INavType):INavType[]
         case "FamilyInfo":
             return ["FamilyInfo-Notification", "FamilyInfo-Vote", "None", "Family-Manager"];
         case "Family":
-            return ["Family-Chatt", "Family-Food", "Family-Notes", "None"];
+            return ["Family-Chatt", "Family-Food", "Family-Notes", "None"]; //EVENTS ? 
         case "Person":
             return ["Person-Todo","Person-Notes","Person-Notification","None"];
         case "Select":

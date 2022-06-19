@@ -4,6 +4,7 @@ import { FamilyContext } from '../../../../../Contexts/FamilyContext';
 import { getData } from '../../../../../Contexts/StaticContext';
 import { IVote } from '../../../../../Interfaces/Family';
 import VoteCreate from './Create/VoteCreate';
+import Vote from './Vote/Vote';
 
 interface Props
 {
@@ -17,7 +18,8 @@ function FamilyVote({}:Props)
         familyID:"",
         id:"",
         name:"",
-        passes:0
+        passes:0,
+        passers:[]
     });
 
     const {family,refreshFamily} = useContext(FamilyContext);
@@ -35,7 +37,7 @@ function FamilyVote({}:Props)
 
     useEffect(() => {
         fetchVote();
-    });
+    },[]);
 
     if(family.voteID === "")
     {
@@ -47,7 +49,7 @@ function FamilyVote({}:Props)
         return <Text>DONE</Text>//<VoteDone />
     }
 
-    return <Text>VOTE</Text>//<VoteInProgress />
+    return <Vote refresh={()=>fetchVote()} vote={vote} />
 }
 
 function GetTotalVoters(vote:IVote):number
