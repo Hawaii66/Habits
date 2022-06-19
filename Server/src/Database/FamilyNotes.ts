@@ -4,6 +4,7 @@ import { GetRandomID } from "./Family";
 
 type CreateNoteType = (note:INote) => Promise<INote>;
 type GetFamilyNotesType = (email:string) => Promise<INote[]>;
+type GetFamilyNoteType = (id:string) => Promise<INote>;
 
 export const CreateNote:CreateNoteType = async (note) => {
     note.id = GetRandomID("note");
@@ -24,4 +25,10 @@ export const GetFamilyNotes:GetFamilyNotesType = async (email) => {
     var selected:INote[] = [];
     fetchedNotes.forEach((note)=>{if(note.owners.includes(email) && !note.private){selected.push(note)}});
     return selected;
+}
+
+export const GetFamilyNote:GetFamilyNoteType = async (id) => {
+    const note:INote = await notes.findOne({id:id});
+    console.log(note);
+    return note;
 }

@@ -1,8 +1,9 @@
 import {Socket} from "socket.io";
-import { CreateNote, GetFamilyNotes } from "../../Database/FamilyNotes";
+import { CreateNote, GetFamilyNote, GetFamilyNotes } from "../../Database/FamilyNotes";
 import { GetFamilies, GetFamily } from "../../Database/Family";
 import {Express} from "express";
 import { DeleteNote } from "../../Database/Notes";
+import { INote } from "../../Interfaces/Notes";
 
 interface SocketClient{
     socket:Socket,
@@ -11,6 +12,7 @@ interface SocketClient{
 
 const users:SocketClient[] = [];
 const rooms:{ [ id:string ]:SocketClient[]} = {};
+const openNotes:{[id:string]:INote} = {}
 
 function GetDebug()
 {
@@ -26,6 +28,7 @@ function GetDebug()
         temp2[key] = temp3;
     }
     debug["rooms"] = temp2;
+    debug["notes"] = openNotes;
     return debug;
 }
 
@@ -47,6 +50,18 @@ function GetSocketUser(socket:Socket)
     }
 
     return null;
+}
+
+function EmitToFamily(familyID:string,id:string,message:any)
+{
+    GetSockets(familyID).forEach((s)=>s.emit(id,message));
+}
+
+function EmitToFamilyExceptSocket(familyID:string,id:string,message:any,socket:Socket)
+{
+    rooms[familyID].forEach(u=>{
+        if(u.socket.id !== socket.id){u.socket.emit(id,message)}
+    });
 }
 
 export const SocketRoutes = (io:any, app:Express) => {
@@ -100,6 +115,40 @@ export const SocketRoutes = (io:any, app:Express) => {
             const notes = await GetFamilyNotes(data.email);
             GetSockets(family.id).forEach(s=>s.emit("C-FamilySocial-Notes-Delete",notes));
         });
+
+        socket.on("S-FamilySocial-Notes-Open", async(data:any)=>{
+            const noteID = data.noteID;
+
+            if(openNotes[noteID] === undefined)
+            {
+                openNotes[noteID] = await GetFamilyNote(noteID);
+            }
+            console.log(openNotes[noteID]);
+
+            socket.emit("C-FamilySocial-Notes-Open", openNotes[noteID]);
+        });
+
+        socket.on("S-FamilySocial-Notes-Header", async(data:any)=>{
+            const family = await GetFamily(data.familyID);
+            if(family === null){return;}
+
+            const noteID = data.noteID;
+            var note = openNotes[noteID];
+            note.header = data.header;
+
+            EmitToFamilyExceptSocket(family.id,"C-FamilySocial-Notes-Header",note,socket);
+        });
+
+        socket.on("S-FamilySocial-Notes-Text", async(data:any)=>{
+            const family = await GetFamily(data.familyID);
+            if(family === null){return;}
+
+            const noteID = data.noteID;
+            var note = openNotes[noteID];
+            note.text = data.text;
+
+            EmitToFamilyExceptSocket(family.id,"C-FamilySocial-Notes-Text",note,socket);
+        })
 
         socket.on("disconnect",()=>{
             const user = GetSocketUser(socket);
