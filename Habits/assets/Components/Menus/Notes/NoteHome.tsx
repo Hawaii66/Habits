@@ -28,7 +28,6 @@ function NoteHome({setNote}:Props) {
     const [deleteScale,deleteRotation] = useShake(shouldDelete);
 
     const fetchNotes = async () => {
-        console.log("FETCHING NOTES", user);
         const {success, data} = await getData(`/notes/private/get/${user.email}`);
         if(!success){return;}
         

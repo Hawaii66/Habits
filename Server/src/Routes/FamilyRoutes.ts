@@ -8,9 +8,7 @@ import { NoteRoutes } from "./Family/Notes";
 export const FamilyRoutes = (app:Express) => {
     app.get("/family/get/member/:id",async (req,res) => {
         const member = req.params.id;
-        console.log(member);
         const families = await GetFamilies(member);
-        console.log(families);
         res.status(200).json(families);
     });
 

@@ -15,7 +15,6 @@ export const Routes = async (app:Express) => {
     app.post("/notification/save/:email",async(req,res)=>{
         const email = req.params.email;
         const token = req.body.token;
-        console.log(email, token);
         
         await UpdateExpoToken(email, token);
 

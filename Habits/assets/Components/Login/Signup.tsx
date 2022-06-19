@@ -40,8 +40,6 @@ function Signup({cancell}:Props) {
 			},
 			body:JSON.stringify(user)
 		}).then(res=>res.json());
-
-		console.log(result);
 	}
 
 	if(state === "apple"){

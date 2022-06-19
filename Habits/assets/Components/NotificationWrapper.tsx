@@ -44,11 +44,8 @@ function NotificationWrapper({children}:Props) {
 
 	useEffect(() => {
 		registerForPushNotificationsAsync().then(async(token) => {
-			console.log("FOund token", token);
 			if(token === undefined){return;}
-			console.log("Token not undefined");
 			setExpoPushToken(token);
-			console.log("Saving to internet with email", user);
 			await uploadData(`/notification/save/${user.email}`,"POST",{
 				token:token
 			});
@@ -68,9 +65,7 @@ function NotificationWrapper({children}:Props) {
             });
 		});
 
-		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-			console.log(response);
-		  });
+		responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {});
 
 		return () => {
 			if(notificationListener !== undefined && notificationListener.current !== undefined){
@@ -150,7 +145,6 @@ async function registerForPushNotificationsAsync() {
 		return;
 		}
 		token = (await Notifications.getExpoPushTokenAsync()).data;
-		console.log(token);
 	} else {
 		alert('Must use physical device for Push Notifications');
 	}

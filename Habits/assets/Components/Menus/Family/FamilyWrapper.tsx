@@ -35,7 +35,6 @@ function FamilyWrapper({menu}:Props)
 
     const fetchFamily = async () => {
         const result = await getData(`/family/get/member/${user.email}`);
-        console.log("FETCH",result);
         if(result.success)
         {
             const activeId = await AsyncStorage.getItem("family-active");
@@ -44,7 +43,6 @@ function FamilyWrapper({menu}:Props)
                 result.data.forEach((family:IFamily) => {
                     if(family.id === activeId)
                     {
-                        console.log("EMIT");
                         socket?.emit("Family-Join",{familyID:family.id});
                         setFamily(family);
                     }
@@ -52,7 +50,6 @@ function FamilyWrapper({menu}:Props)
             }
             else
             {
-                console.log("EMITtset",result.data[0].id);
                 socket?.emit("Family-Join",{familyID:result.data[0].id});
                 setFamily(result.data[0]);
             }

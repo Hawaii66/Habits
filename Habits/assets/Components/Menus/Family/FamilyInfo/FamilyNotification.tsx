@@ -62,7 +62,6 @@ function FamilyNotification({}:Props)
         var arr:NotificationPreset[] = await JSON.parse(await AsyncStorage.getItem("family-noti-saved"));
         if(arr !== null)
         {
-            console.log(arr, header);
             for(var i = 0; i < arr.length; i ++)
             {
                 if(arr[i].header === header)

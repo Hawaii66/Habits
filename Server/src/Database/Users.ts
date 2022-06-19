@@ -8,10 +8,8 @@ type UpdateExpoPushTokenType = (email:string, token:string) => Promise<void>;
 
 export const UpdateExpoToken:UpdateExpoPushTokenType = async (email, token) => {
     var user = await GetUserEmail(email);
-    console.log(user);
     if(user.appleID !== "" && user.expoPushToken !== token)
     {
-        console.log("SAVing user");
         user.expoPushToken = token;
         await users.findOneAndUpdate({email:email},{$set:user});
     }

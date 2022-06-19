@@ -1,7 +1,8 @@
 import {Socket} from "socket.io";
-import { CreateNote } from "../../Database/FamilyNotes";
+import { CreateNote, GetFamilyNotes } from "../../Database/FamilyNotes";
 import { GetFamilies, GetFamily } from "../../Database/Family";
 import {Express} from "express";
+import { DeleteNote } from "../../Database/Notes";
 
 interface SocketClient{
     socket:Socket,
@@ -73,7 +74,7 @@ export const SocketRoutes = (io:any, app:Express) => {
             rooms[family.id] = users.filter((user)=>family.members.includes(user.email));
         });
 
-        socket.on("S-FamilySocial-Notes-Create1",async(data:any)=>{
+        socket.on("S-FamilySocial-Notes-Create",async(data:any)=>{
             const family = await GetFamily(data.familyID);
             if(family === null){return;}
 
@@ -87,6 +88,17 @@ export const SocketRoutes = (io:any, app:Express) => {
             });
 
             GetSockets(family.id).forEach((s)=>s.emit("C-FamilySocial-Notes-Create",note));
+        });
+
+        socket.on("S-FamilySocial-Notes-Delete",async(data:any)=>{
+            const family = await GetFamily(data.familyID);
+            if(family === null){return;}
+        
+            const noteID = data.noteID;
+            await DeleteNote(noteID);
+
+            const notes = await GetFamilyNotes(data.email);
+            GetSockets(family.id).forEach(s=>s.emit("C-FamilySocial-Notes-Delete",notes));
         });
 
         socket.on("disconnect",()=>{

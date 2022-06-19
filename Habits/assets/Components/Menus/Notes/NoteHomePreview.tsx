@@ -30,7 +30,6 @@ function NoteHomePreview({note,onSelect, del, delPress}:Props) {
     }
 
     const delBtnClicked = () => {
-        console.log("DEl clicked"+  del);
         if(del){delPress()}
     }
 

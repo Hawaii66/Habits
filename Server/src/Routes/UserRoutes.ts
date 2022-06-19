@@ -34,8 +34,6 @@ export const UserRoutes = (app:Express) => {
             return;
         }
 
-        console.log(id);
-
         const user = await GetUserID(id);
         return res.status(200).json({user:user});
     });
