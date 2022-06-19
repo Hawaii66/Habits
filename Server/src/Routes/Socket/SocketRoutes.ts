@@ -73,7 +73,7 @@ export const SocketRoutes = (io:any, app:Express) => {
             rooms[family.id] = users.filter((user)=>family.members.includes(user.email));
         });
 
-        socket.on("FamilySocial-Notes-Create",async(data:any)=>{
+        socket.on("S-FamilySocial-Notes-Create1",async(data:any)=>{
             const family = await GetFamily(data.familyID);
             if(family === null){return;}
 
@@ -86,7 +86,7 @@ export const SocketRoutes = (io:any, app:Express) => {
                 text:"Click me to edit the text",
             });
 
-            GetSockets(family.id).forEach((s)=>s.emit("FamilySocial-Notes-Create",note));
+            GetSockets(family.id).forEach((s)=>s.emit("C-FamilySocial-Notes-Create",note));
         });
 
         socket.on("disconnect",()=>{

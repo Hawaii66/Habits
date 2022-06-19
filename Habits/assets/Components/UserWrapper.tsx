@@ -7,12 +7,18 @@ interface Props{
 }
 
 function UserWrapper({children}:Props) {
-    const [user, setUser] = useState<IUser>({
+    const [user, setUser] = useState<IUser>(/*{
         appleID:"001173.a0238b8b3ba740568625f3233c9e607f.2255",
         email:"hawaiilive@outlook.com",
         expoPushToken:"ExponentPushToken[n9T5DbMgtS0HQnN56rXFFJ]",
         name:"Sebastian Ahlman",
         username:"HawaiiDev",
+    }*/{
+        appleID:"",
+        email:"",
+        expoPushToken:"",
+        name:"",
+        username:""
     });
     const [expoToken,setToken] = useState("");
 

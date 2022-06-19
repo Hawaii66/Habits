@@ -3,6 +3,7 @@ import { GetUserEmail } from "../Database/Users";
 import { AddMember, ChangeName, CreateFamily, GetFamilies, GetFamily, RemoveMember } from "../Database/Family";
 import axios from 'axios';
 import { VoteRoutes } from "./Family/Vote";
+import { NoteRoutes } from "./Family/Notes";
 
 export const FamilyRoutes = (app:Express) => {
     app.get("/family/get/member/:id",async (req,res) => {
@@ -60,4 +61,5 @@ export const FamilyRoutes = (app:Express) => {
     });
 
     VoteRoutes(app);
+    NoteRoutes(app);
 }
