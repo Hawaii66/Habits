@@ -25,10 +25,12 @@ function NoteEdit({note,setNote,back}:Props)
 
     useEffect(()=>{
         socket?.on("C-FamilySocial-Notes-Header",data=>{
+            if(data.id !== note.id){return;}
             setEditNote(data);
         });
 
         socket?.on("C-FamilySocial-Notes-Text",data=>{
+            if(data.id !== note.id){return;}
             setEditNote(data);
         });
     },[]);
