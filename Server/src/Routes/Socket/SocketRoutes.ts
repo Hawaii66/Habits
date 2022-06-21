@@ -199,6 +199,7 @@ export const SocketRoutes = (io:any, app:Express) => {
                         break;
                     }
                 }
+                if(value.length === 0){delete rooms[key];}
             }
             for(var i = 0; i < users.length; i ++)
             {
